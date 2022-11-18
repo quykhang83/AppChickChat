@@ -55,6 +55,15 @@ public class Handler implements Runnable {
     public void run() {
 
         while (true) {
+
+//            Thread handlerMessageThread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            });
+//            handlerMessageThread.start();
+
             try {
                 // Đọc yêu cầu từ user
                 String[] messageReceived = input.readUTF().split(",");
@@ -63,24 +72,52 @@ public class Handler implements Runnable {
                 if (messageReceived[0].equals("Log out")) {
 
                     // Đóng socket và chuyển trạng thái thành offline
-                    Server.LogOutAccount(this);
+                    Server.LogOutAccount(Handler.this);
                     socket.close();
                     // Thông báo cho các user khác cập nhật danh sách người dùng trực tuyến
                     Server.updateOnlineUsers();
-                    break;
+//                            break;
 
                 } // Yêu cầu gửi tin nhắn dạng văn bản
                 else if (messageReceived[0].equals("Text")) {
                     String sender = messageReceived[1];
                     String receiver = messageReceived[2];
                     String content = messageReceived[3];
-                    
+
                     for (Handler client : Server.clients) {
                         if (client.getUsername().equals(receiver)) {
                             synchronized (lock) {
-                                String messageSent = "Text" + "," + sender + "," + 
-                                        receiver + "," + content;
+                                String messageSent = "Text" + "," + sender + ","
+                                        + receiver + "," + content;
                                 client.getOutput().writeUTF(messageSent);
+                                client.getOutput().flush();
+                                break;
+                            }
+                        }
+                    }
+                } // Yêu cầu gửi tin nhắn dạng file
+                else if (messageReceived[0].equals("File")) {
+                    // Đọc các header của tin nhắn gửi file
+                    String sender = messageReceived[1];
+                    String receiver = messageReceived[2];
+                    String filename = messageReceived[3];
+                    int size = Integer.parseInt(messageReceived[4]);
+                    int bufferSize = 2048;
+                    byte[] buffer = new byte[bufferSize];
+
+                    for (Handler client : Server.clients) {
+                        if (client.getUsername().equals(receiver)) {
+                            synchronized (lock) {
+                                String messageSent = "File" + "," + sender + "," + receiver + ","
+                                        + filename + "," + String.valueOf(size);
+                                client.getOutput().writeUTF(messageSent);
+
+                                while (size > 0) {
+                                    // Gửi lần lượt từng buffer cho người nhận cho đến khi hết file
+                                    input.read(buffer, 0, Math.min(size, bufferSize));
+                                    client.getOutput().write(buffer, 0, Math.min(size, bufferSize));
+                                    size -= bufferSize;
+                                }
                                 client.getOutput().flush();
                                 break;
                             }
