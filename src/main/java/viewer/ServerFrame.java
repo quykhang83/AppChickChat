@@ -20,6 +20,7 @@ public class ServerFrame extends javax.swing.JFrame {
         bntRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
         labelNotification = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TchaTSever");
@@ -40,7 +41,7 @@ public class ServerFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(bntRun);
-        bntRun.setBounds(150, 30, 140, 59);
+        bntRun.setBounds(230, 250, 140, 59);
 
         btnStop.setBackground(new java.awt.Color(255, 255, 255));
         btnStop.setFont(new java.awt.Font("Bahnschrift", 1, 18)); // NOI18N
@@ -53,7 +54,7 @@ public class ServerFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnStop);
-        btnStop.setBounds(150, 230, 140, 59);
+        btnStop.setBounds(60, 250, 140, 59);
 
         labelNotification.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
         labelNotification.setForeground(new java.awt.Color(255, 255, 255));
@@ -61,7 +62,11 @@ public class ServerFrame extends javax.swing.JFrame {
         labelNotification.setText("The Server is stopping");
         labelNotification.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Status", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Bahnschrift", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel1.add(labelNotification);
-        labelNotification.setBounds(80, 120, 260, 60);
+        labelNotification.setBounds(90, 180, 260, 60);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/cc.PNG"))); // NOI18N
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(140, 10, 150, 150);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -146,6 +151,7 @@ public class ServerFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntRun;
     private javax.swing.JButton btnStop;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelNotification;
     // End of variables declaration//GEN-END:variables
