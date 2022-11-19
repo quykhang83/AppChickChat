@@ -55,7 +55,6 @@ public class Handler implements Runnable {
     public void run() {
 
         while (true) {
-
 //            Thread handlerMessageThread = new Thread(new Runnable() {
 //                @Override
 //                public void run() {
@@ -63,7 +62,6 @@ public class Handler implements Runnable {
 //                }
 //            });
 //            handlerMessageThread.start();
-
             try {
                 // Đọc yêu cầu từ user
                 String[] messageReceived = input.readUTF().split(",");
@@ -76,10 +74,11 @@ public class Handler implements Runnable {
                     socket.close();
                     // Thông báo cho các user khác cập nhật danh sách người dùng trực tuyến
                     Server.updateOnlineUsers();
-//                            break;
+                    break;
 
                 } // Yêu cầu gửi tin nhắn dạng văn bản
                 else if (messageReceived[0].equals("Text")) {
+
                     String sender = messageReceived[1];
                     String receiver = messageReceived[2];
                     String content = messageReceived[3];
@@ -87,14 +86,19 @@ public class Handler implements Runnable {
                     for (Handler client : Server.clients) {
                         if (client.getUsername().equals(receiver)) {
                             synchronized (lock) {
-                                String messageSent = "Text" + "," + sender + ","
-                                        + receiver + "," + content;
-                                client.getOutput().writeUTF(messageSent);
-                                client.getOutput().flush();
-                                break;
+                                try {
+                                    String messageSent = "Text" + "," + sender + ","
+                                            + receiver + "," + content;
+                                    client.getOutput().writeUTF(messageSent);
+                                    client.getOutput().flush();
+                                    break;
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Handler.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
                         }
                     }
+
                 } // Yêu cầu gửi tin nhắn dạng file
                 else if (messageReceived[0].equals("File")) {
                     // Đọc các header của tin nhắn gửi file
@@ -123,6 +127,7 @@ public class Handler implements Runnable {
                             }
                         }
                     }
+
                 }
 
             } catch (IOException e) {

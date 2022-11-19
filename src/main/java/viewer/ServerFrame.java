@@ -5,8 +5,10 @@ import java.awt.Toolkit;
 import java.io.IOException;
 
 public class ServerFrame extends javax.swing.JFrame {
-   private  Thread serverThread;
-   private Server server;
+
+    private Thread serverThread;
+    private Server server;
+
     public ServerFrame() {
         initComponents();
         setIconImage();
@@ -88,14 +90,15 @@ public class ServerFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     //title
-    private void setIconImage(){
+    private void setIconImage() {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Image/tchat_title_white.png")));
     }
-    
+
     private void bntRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntRunActionPerformed
-         serverThread= new Thread() {
+        serverThread = new Thread() {
+            @Override
             public void run() {
                 try {
                     server = new Server();
